@@ -1,3 +1,4 @@
+import * as React from "react";
 import LoginForm from "../../../features/authorization/ui";
 import { TransactionForm } from "../../../features/transaction/ui";
 import { Header } from "../Header";

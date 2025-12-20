@@ -34,7 +34,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -56,6 +58,8 @@
   },
   "devDependencies": {
     "sass": "^1.97.0",
-    "swc-plugin-effector": "^0.0.0"
+    "swc-plugin-effector": "^0.0.0",
+    "eslint": "^8.x.x",
+    "eslint-config-react-app": "^7.x.x"
   }
 }

@@ -1,7 +1,7 @@
 import { FormControl, Modal, Typography, Button } from "@mui/material";
 import { FormField } from "./FormField";
 import styles from "./index.module.scss";
-import { Children, isValidElement, ReactElement } from "react";
+import { Children, FC, isValidElement, ReactElement } from "react";
 
 interface FormProps {
   header: string;
@@ -12,7 +12,7 @@ interface FormProps {
   close?: (value: Event) => void;
 }
 
-export const BaseForm: React.FC<FormProps> = ({ children, ...props }) => {
+export const BaseForm: FC<FormProps> = ({ children, ...props }) => {
   const {
     onSubmit,
     submitButtonText = "SUBMIT",

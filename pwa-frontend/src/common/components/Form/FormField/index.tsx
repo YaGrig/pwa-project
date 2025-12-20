@@ -1,7 +1,8 @@
 import { TextFieldProps, TextField } from "@mui/material";
 import styles from "./index.module.scss";
+import { FC } from "react";
 
-export const FormField: React.FC<TextFieldProps> = ({
+export const FormField: FC<TextFieldProps> = ({
   fullWidth = true,
   margin = "normal",
   label,

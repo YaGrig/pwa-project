@@ -79,7 +79,7 @@ jobs:
 
       - name: Install Backend Dependencies
         working-directory: ./pwa-backend
-        run: npm i
+        run: npm ci
         # if: exists('backend/package.json')
 
       - name: Run Backend Linting
@@ -97,26 +97,26 @@ jobs:
         run: npm test -- --passWithNoTests
         # if: exists('backend/package.json')
 
-  #     # Frontend (React)
-  #     - name: Install Frontend Dependencies
-  #       working-directory: ./frontend
-  #       run: npm ci
-  #       if: exists('frontend/package.json')
+      # Frontend (React)
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
+        # if: exists('frontend/package.json')
 
-  #     - name: Run Frontend Linting
-  #       working-directory: ./frontend
-  #       run: npm run lint
-  #       if: exists('frontend/package.json')
+      - name: Run Frontend Linting
+        working-directory: ./frontend
+        run: npm run lint
+        # if: exists('frontend/package.json')
 
-  #     - name: Run Frontend Tests
-  #       working-directory: ./frontend
-  #       run: npm test -- --passWithNoTests --watchAll=false
-  #       if: exists('frontend/package.json')
+      - name: Run Frontend Tests
+        working-directory: ./frontend
+        run: npm test -- --passWithNoTests --watchAll=false
+        # if: exists('frontend/package.json')
 
-  #     - name: Build Frontend
-  #       working-directory: ./frontend
-  #       run: npm run build
-  #       if: exists('frontend/package.json')
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
+        # if: exists('frontend/package.json')
 
   # # # Job 2: Сборка Docker образов
   # # build-docker-images:

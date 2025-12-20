@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react";
 import { BaseForm } from "../../../common/components/Form";
 import { FormField } from "../../../common/components/Form/FormField";
 import { useTransaction } from "../lib/hooks/useTransaction";
@@ -14,7 +15,7 @@ export const TransactionForm = () => {
 
   const handleChangeField =
     (event: (payload: string) => string) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       event(e.target.value);
     };
 

@@ -19,9 +19,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
-import { useMemo, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import style from "./index.module.scss";
-import { sortOptions } from "../../../features/transaction/lib/types/transaction.type";
 
 type Order = "asc" | "desc";
 
@@ -61,7 +60,7 @@ function getComparator<Key extends keyof any>(
 interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   sortBy: string;
   rowCount: number;
@@ -233,7 +232,7 @@ export default function EnhancedTable<
     onSortByChange(sortOption);
   };
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       const newSelected = rows.map((n) => +n.id);
       setSelected(newSelected);
@@ -265,9 +264,7 @@ export default function EnhancedTable<
     onPageChange(newPage);
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     onLimitChange(parseInt(event.target.value, 10));
     onPageChange(0);
   };
@@ -275,7 +272,7 @@ export default function EnhancedTable<
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * limit - rows.length) : 0;
 
-  const visibleRows = React.useMemo(
+  const visibleRows = useMemo(
     () =>
       [...rows].sort((a: Q, b: Q) => {
         return getComparator(order, sortBy)(a, b);
@@ -329,7 +326,9 @@ export default function EnhancedTable<
                       />
                     </TableCell>
                     {cells.map((item) => (
-                      <TableCell align="right">{item}</TableCell>
+                      <TableCell key={item.id} align="right">
+                        {item}
+                      </TableCell>
                     ))}
                   </TableRow>
                 );
