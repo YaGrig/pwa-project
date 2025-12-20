@@ -1,0 +1,330 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - "**/*.md"
+      - "**/*.txt"
+      - "**/*.spec.js"
+      - "**/docs/**"
+      - "**/examples/**"
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+env:
+  # Docker Hub / Container Registry
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+  # Docker
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+  # Application
+  NODE_VERSION: "20"
+  POSTGRES_VERSION: "15-alpine"
+  REDIS_VERSION: "7-alpine"
+
+  # Ports
+  API_PORT: 3000
+  FRONTEND_PORT: 3001
+  POSTGRES_PORT: 5432
+  REDIS_PORT: 6379
+
+jobs:
+  lint-and-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:${{ env.POSTGRES_VERSION }}
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:${{ env.REDIS_VERSION }}
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm ci
+        if: exists('backend/package.json')
+
+      - name: Run Backend Linting
+        working-directory: ./backend
+        run: npm run lint
+        if: exists('backend/package.json')
+
+      - name: Run Backend Tests
+        working-directory: ./backend
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
+          REDIS_URL: redis://localhost:6379
+          NODE_ENV: test
+          JWT_SECRET: test_jwt_secret
+        run: npm test -- --passWithNoTests
+        if: exists('backend/package.json')
+
+      # Frontend (React)
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
+        if: exists('frontend/package.json')
+
+      - name: Run Frontend Linting
+        working-directory: ./frontend
+        run: npm run lint
+        if: exists('frontend/package.json')
+
+      - name: Run Frontend Tests
+        working-directory: ./frontend
+        run: npm test -- --passWithNoTests --watchAll=false
+        if: exists('frontend/package.json')
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
+        if: exists('frontend/package.json')
+
+  # # Job 2: Сборка Docker образов
+  # build-docker-images:
+  #   name: Build Docker Images
+  #   runs-on: ubuntu-latest
+  #   needs: lint-and-test
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+  #   outputs:
+  #     backend-image: ${{ steps.build-backend.outputs.image }}
+  #     frontend-image: ${{ steps.build-frontend.outputs.image }}
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
+
+  #     - name: Log in to Container Registry
+  #       uses: docker/login-action@v3
+  #       with:
+  #         registry: ${{ env.REGISTRY }}
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
+
+  #     - name: Extract metadata (tags, labels)
+  #       id: meta
+  #       uses: docker/metadata-action@v5
+  #       with:
+  #         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+  #         tags: |
+  #           type=ref,event=branch
+  #           type=sha,prefix={{branch}}-
+  #           type=raw,value=latest,enable={{is_default_branch}}
+
+  #     # Сборка Backend
+  #     - name: Build Backend Docker Image
+  #       id: build-backend
+  #       if: exists('backend/package.json')
+  #       uses: docker/build-push-action@v5
+  #       with:
+  #         context: ./backend
+  #         file: ./backend/Dockerfile
+  #         push: false
+  #         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:${{ github.sha }}
+  #         cache-from: type=gha
+  #         cache-to: type=gha,mode=max
+  #         outputs: type=docker,dest=/tmp/backend.tar
+
+  #     # Сборка Frontend
+  #     - name: Build Frontend Docker Image
+  #       id: build-frontend
+  #       if: exists('frontend/package.json')
+  #       uses: docker/build-push-action@v5
+  #       with:
+  #         context: ./frontend
+  #         file: ./frontend/Dockerfile
+  #         push: false
+  #         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:${{ github.sha }}
+  #         cache-from: type=gha
+  #         cache-to: type=gha,mode=max
+  #         outputs: type=docker,dest=/tmp/frontend.tar
+
+  # # Job 3: Интеграционные тесты с Docker Compose
+  # integration-tests:
+  #   name: Integration Tests
+  #   runs-on: ubuntu-latest
+  #   needs: build-docker-images
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Load Docker images
+  #       run: |
+  #         docker load -i /tmp/backend.tar
+  #         docker load -i /tmp/frontend.tar
+
+  #     - name: Set up Docker Compose
+  #       run: |
+  #         docker compose version
+
+  #     - name: Run Integration Tests
+  #       env:
+  #         COMPOSE_PROJECT_NAME: ci-test-${{ github.run_id }}
+  #       run: |
+  #         # Запуск всех сервисов
+  #         docker compose -f docker-compose.test.yml up -d
+
+  #         # Ждем готовности сервисов
+  #         sleep 30
+
+  #         # Проверка здоровья API
+  #         curl -f http://localhost:${{ env.API_PORT }}/api/health || exit 1
+
+  #         # Запуск интеграционных тестов
+  #         docker compose -f docker-compose.test.yml run --rm api-test npm run test:e2e
+
+  #         # Остановка контейнеров
+  #         docker compose -f docker-compose.test.yml down
+
+  #     - name: Upload test results
+  #       uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: test-results
+  #         path: |
+  #           backend/test-results/
+  #           frontend/test-results/
+  #         retention-days: 7
+
+  # # Job 4: Публикация образов
+  # push-images:
+  #   name: Push Docker Images
+  #   runs-on: ubuntu-latest
+  #   needs: [build-docker-images, integration-tests]
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
+
+  #     - name: Log in to Container Registry
+  #       uses: docker/login-action@v3
+  #       with:
+  #         registry: ${{ env.REGISTRY }}
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
+
+  #     - name: Extract metadata
+  #       id: meta
+  #       uses: docker/metadata-action@v5
+  #       with:
+  #         images: |
+  #           ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
+  #           ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
+  #         tags: |
+  #           type=ref,event=tag
+  #           type=ref,event=branch
+  #           type=sha,prefix={{branch}}-
+  #           type=raw,value=latest,enable={{is_default_branch}}
+
+  #     - name: Build and push Backend
+  #       if: exists('backend/package.json')
+  #       uses: docker/build-push-action@v5
+  #       with:
+  #         context: ./backend
+  #         file: ./backend/Dockerfile
+  #         push: true
+  #         tags: ${{ steps.meta.outputs.tags }}
+  #         labels: ${{ steps.meta.outputs.labels }}
+  #         cache-from: type=gha
+  #         cache-to: type=gha,mode=max
+
+  #     - name: Build and push Frontend
+  #       if: exists('frontend/package.json')
+  #       uses: docker/build-push-action@v5
+  #       with:
+  #         context: ./frontend
+  #         file: ./frontend/Dockerfile
+  #         push: true
+  #         tags: ${{ steps.meta.outputs.tags }}
+  #         labels: ${{ steps.meta.outputs.labels }}
+  #         cache-from: type=gha
+  #         cache-to: type=gha,mode=max
+
+  #     - name: Generate Deployment Summary
+  #       if: success()
+  #       run: |
+  #         echo "## 🐳 Docker Images Published" >> $GITHUB_STEP_SUMMARY
+  #         echo "" >> $GITHUB_STEP_SUMMARY
+  #         echo "✅ Backend image: \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+  #         echo "✅ Frontend image: \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+  #         echo "" >> $GITHUB_STEP_SUMMARY
+  #         echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+  #         echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+
+  # # Job 5: Деплой (пример для Kubernetes)
+  # deploy:
+  #   name: Deploy to Production
+  #   runs-on: ubuntu-latest
+  #   needs: push-images
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  #   environment: production
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Configure K8s deployment
+  #       env:
+  #         KUBECONFIG: ${{ secrets.KUBECONFIG }}
+  #       run: |
+  #         # Обновление образов в манифестах Kubernetes
+  #         sed -i "s|image:.*backend.*|image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:${{ github.sha }}|g" k8s/deployment.yaml
+  #         sed -i "s|image:.*frontend.*|image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:${{ github.sha }}|g" k8s/deployment.yaml
+
+  #         # Применение изменений
+  #         kubectl apply -f k8s/
+  #         kubectl rollout status deployment/backend-deployment
+  #         kubectl rollout status deployment/frontend-deployment
+
+  #     - name: Verify deployment
+  #       run: |
+  #         echo "✅ Deployment completed successfully"
+  #         echo "API URL: https://api.yourdomain.com"
+  #         echo "Frontend URL: https://yourdomain.com"

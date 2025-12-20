@@ -1,0 +1,175 @@
+2025/12/17 11:01:04 [notice] 1#1: using the "epoll" event method
+2025/12/17 11:01:04 [notice] 1#1: nginx/1.29.4
+2025/12/17 11:01:04 [notice] 1#1: built by gcc 15.2.0 (Alpine 15.2.0) 
+2025/12/17 11:01:04 [notice] 1#1: OS: Linux 6.10.14-linuxkit
+2025/12/17 11:01:04 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2025/12/17 11:01:04 [notice] 1#1: start worker processes
+2025/12/17 11:01:04 [notice] 1#1: start worker process 20
+2025/12/17 11:01:04 [notice] 1#1: start worker process 21
+2025/12/17 11:01:04 [notice] 1#1: start worker process 22
+2025/12/17 11:01:04 [notice] 1#1: start worker process 23
+2025/12/17 11:01:04 [notice] 1#1: start worker process 24
+2025/12/17 11:01:04 [notice] 1#1: start worker process 25
+2025/12/17 11:01:04 [notice] 1#1: start worker process 26
+2025/12/17 11:01:04 [notice] 1#1: start worker process 27
+2025/12/17 11:04:50 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2025/12/17 11:04:50 [notice] 20#20: gracefully shutting down
+2025/12/17 11:04:50 [notice] 21#21: gracefully shutting down
+2025/12/17 11:04:50 [notice] 20#20: exiting
+2025/12/17 11:04:50 [notice] 22#22: gracefully shutting down
+2025/12/17 11:04:50 [notice] 25#25: gracefully shutting down
+2025/12/17 11:04:50 [notice] 23#23: gracefully shutting down
+2025/12/17 11:04:50 [notice] 24#24: gracefully shutting down
+2025/12/17 11:04:50 [notice] 27#27: gracefully shutting down
+2025/12/17 11:04:50 [notice] 26#26: gracefully shutting down
+2025/12/17 11:04:50 [notice] 23#23: exiting
+2025/12/17 11:04:50 [notice] 21#21: exiting
+2025/12/17 11:04:50 [notice] 26#26: exiting
+2025/12/17 11:04:50 [notice] 22#22: exiting
+2025/12/17 11:04:50 [notice] 20#20: exit
+2025/12/17 11:04:50 [notice] 25#25: exiting
+2025/12/17 11:04:50 [notice] 24#24: exiting
+2025/12/17 11:04:50 [notice] 27#27: exiting
+2025/12/17 11:04:50 [notice] 23#23: exit
+2025/12/17 11:04:50 [notice] 24#24: exit
+2025/12/17 11:04:50 [notice] 21#21: exit
+2025/12/17 11:04:50 [notice] 26#26: exit
+2025/12/17 11:04:50 [notice] 22#22: exit
+2025/12/17 11:04:50 [notice] 25#25: exit
+2025/12/17 11:04:50 [notice] 27#27: exit
+2025/12/17 11:04:50 [notice] 1#1: signal 17 (SIGCHLD) received from 25
+2025/12/17 11:04:50 [notice] 1#1: worker process 20 exited with code 0
+2025/12/17 11:04:50 [notice] 1#1: worker process 24 exited with code 0
+2025/12/17 11:04:50 [notice] 1#1: worker process 25 exited with code 0
+2025/12/17 11:04:50 [notice] 1#1: worker process 27 exited with code 0
+2025/12/17 11:04:50 [notice] 1#1: signal 29 (SIGIO) received
+2025/12/17 11:04:50 [notice] 1#1: signal 17 (SIGCHLD) received from 21
+2025/12/17 11:04:50 [notice] 1#1: worker process 21 exited with code 0
+2025/12/17 11:04:50 [notice] 1#1: worker process 22 exited with code 0
+2025/12/17 11:04:50 [notice] 1#1: worker process 23 exited with code 0
+2025/12/17 11:04:50 [notice] 1#1: worker process 26 exited with code 0
+2025/12/17 11:04:50 [notice] 1#1: exit
+2025/12/17 11:07:21 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:07:22 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:07:23 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:07:24 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:07:25 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:07:27 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:07:30 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:07:37 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:07:51 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:08:30 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:08:31 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:08:31 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:08:32 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:08:33 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:08:35 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:08:38 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:08:45 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:08:58 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:09:24 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:10:11 [notice] 1#1: using the "epoll" event method
+2025/12/17 11:10:11 [notice] 1#1: nginx/1.29.4
+2025/12/17 11:10:11 [notice] 1#1: built by gcc 15.2.0 (Alpine 15.2.0) 
+2025/12/17 11:10:11 [notice] 1#1: OS: Linux 6.10.14-linuxkit
+2025/12/17 11:10:11 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2025/12/17 11:10:11 [notice] 1#1: start worker processes
+2025/12/17 11:10:11 [notice] 1#1: start worker process 20
+2025/12/17 11:10:11 [notice] 1#1: start worker process 21
+2025/12/17 11:10:11 [notice] 1#1: start worker process 22
+2025/12/17 11:10:11 [notice] 1#1: start worker process 23
+2025/12/17 11:10:11 [notice] 1#1: start worker process 24
+2025/12/17 11:10:11 [notice] 1#1: start worker process 25
+2025/12/17 11:10:11 [notice] 1#1: start worker process 26
+2025/12/17 11:10:11 [notice] 1#1: start worker process 27
+2025/12/17 11:17:20 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2025/12/17 11:17:20 [notice] 20#20: gracefully shutting down
+2025/12/17 11:17:20 [notice] 21#21: gracefully shutting down
+2025/12/17 11:17:20 [notice] 23#23: gracefully shutting down
+2025/12/17 11:17:20 [notice] 21#21: exiting
+2025/12/17 11:17:20 [notice] 27#27: gracefully shutting down
+2025/12/17 11:17:20 [notice] 24#24: gracefully shutting down
+2025/12/17 11:17:20 [notice] 22#22: gracefully shutting down
+2025/12/17 11:17:20 [notice] 26#26: gracefully shutting down
+2025/12/17 11:17:20 [notice] 25#25: gracefully shutting down
+2025/12/17 11:17:20 [notice] 24#24: exiting
+2025/12/17 11:17:20 [notice] 20#20: exiting
+2025/12/17 11:17:20 [notice] 23#23: exiting
+2025/12/17 11:17:20 [notice] 27#27: exiting
+2025/12/17 11:17:20 [notice] 23#23: exit
+2025/12/17 11:17:20 [notice] 21#21: exit
+2025/12/17 11:17:20 [notice] 26#26: exiting
+2025/12/17 11:17:20 [notice] 22#22: exiting
+2025/12/17 11:17:20 [notice] 25#25: exiting
+2025/12/17 11:17:20 [notice] 24#24: exit
+2025/12/17 11:17:20 [notice] 22#22: exit
+2025/12/17 11:17:20 [notice] 20#20: exit
+2025/12/17 11:17:20 [notice] 27#27: exit
+2025/12/17 11:17:20 [notice] 26#26: exit
+2025/12/17 11:17:20 [notice] 25#25: exit
+2025/12/17 11:17:20 [notice] 1#1: signal 17 (SIGCHLD) received from 22
+2025/12/17 11:17:20 [notice] 1#1: worker process 22 exited with code 0
+2025/12/17 11:17:20 [notice] 1#1: signal 29 (SIGIO) received
+2025/12/17 11:17:20 [notice] 1#1: signal 17 (SIGCHLD) received from 25
+2025/12/17 11:17:20 [notice] 1#1: worker process 20 exited with code 0
+2025/12/17 11:17:20 [notice] 1#1: worker process 21 exited with code 0
+2025/12/17 11:17:20 [notice] 1#1: worker process 23 exited with code 0
+2025/12/17 11:17:20 [notice] 1#1: worker process 24 exited with code 0
+2025/12/17 11:17:20 [notice] 1#1: worker process 25 exited with code 0
+2025/12/17 11:17:20 [notice] 1#1: worker process 26 exited with code 0
+2025/12/17 11:17:20 [notice] 1#1: worker process 27 exited with code 0
+2025/12/17 11:17:20 [notice] 1#1: exit
+2025/12/17 11:17:21 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:17:22 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:17:23 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:17:24 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:17:25 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:17:26 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:17:30 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:17:36 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:17:49 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:18:15 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:19:07 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:20:07 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:21:07 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:22:07 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:23:08 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:24:08 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:25:08 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:26:08 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:27:08 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:28:09 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:29:09 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:30:09 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:31:09 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:32:09 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:33:10 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:34:10 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:35:10 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:36:10 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:37:10 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:38:11 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:39:11 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:40:11 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:41:11 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:42:11 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:43:12 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:44:12 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:45:12 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:46:12 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:47:13 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:48:13 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:49:13 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:50:13 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:51:14 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:52:14 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:53:14 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:54:14 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:55:15 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:56:15 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:57:15 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:58:15 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 11:59:16 [emerg] 1#1: open() "/etc/nginx/nginx.conf" failed (2: No such file or directory)
+2025/12/17 18:13:32 [warn] 34#34: *10 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.64.66.1, server: _, request: "GET /static/js/main.9b58ba06.js.map HTTP/1.1", upstream: "http://172.18.0.3:80/static/js/main.9b58ba06.js.map", host: "localhost"
+2025/12/20 16:33:53 [warn] 33#33: *7 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.64.66.1, server: _, request: "GET /static/js/main.856e25bf.js.map HTTP/1.1", upstream: "http://172.18.0.3:80/static/js/main.856e25bf.js.map", host: "localhost"
+2025/12/20 16:44:43 [warn] 22#22: *25 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 172.64.66.1, server: _, request: "GET /static/js/main.d3c2c80b.js.map HTTP/1.1", upstream: "http://172.18.0.3:80/static/js/main.d3c2c80b.js.map", host: "localhost"

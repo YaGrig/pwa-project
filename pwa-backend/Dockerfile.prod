@@ -1,0 +1,46 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+
+COPY package.json package-lock.json ./
+COPY . .
+
+RUN npm install
+
+RUN npm run build
+
+RUN npm prune --production
+
+FROM node:18-alpine AS production
+
+RUN apk add --no-cache tini curl
+
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+WORKDIR /app
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package*.json ./
+
+RUN chown -R nodejs:nodejs /app
+
+USER nodejs
+
+ENV NODE_ENV=production \
+    PORT=3000 \
+    NODE_OPTIONS="--max-old-space-size=512"
+
+EXPOSE 3001
+
+CMD ["node", "dist/main.js"]
+
+# FROM production AS scanner
+
+# RUN apk add --no-cache trivy
+# COPY --from=aquasec/trivy:latest /usr/local/bin/trivy /usr/local/bin/trivy
+
+# # Сканируем образ (пример команды, обычно запускается отдельно)
+# RUN trivy fs --exit-code 1 --severity HIGH,CRITICAL /

@@ -1,0 +1,39 @@
+import { BaseForm } from "../../../common/components/Form";
+import { FormField } from "../../../common/components/Form/FormField";
+import { useTransaction } from "../lib/hooks/useTransaction";
+import { useCreateTransactionMutation } from "../model/mutations";
+
+export const TransactionForm = () => {
+  const { form, AmountChange, DescriptionChange, isModalOpen } =
+    useTransaction();
+
+  const { mutate: create } = useCreateTransactionMutation();
+  const handleSubmit = () => {
+    create(form);
+  };
+
+  const handleChangeField =
+    (event: (payload: string) => string) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      event(e.target.value);
+    };
+
+  return (
+    <BaseForm
+      header="New Transaction"
+      open={isModalOpen}
+      onSubmit={handleSubmit}
+    >
+      <FormField
+        value={form.amount}
+        label="amount"
+        onChange={handleChangeField(AmountChange)}
+      />
+      <FormField
+        value={form.description}
+        label="description"
+        onChange={handleChangeField(DescriptionChange)}
+      />
+    </BaseForm>
+  );
+};

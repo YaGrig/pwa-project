@@ -1,0 +1,47 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files first for better caching
+COPY package.json package-lock.json ./
+RUN npm install
+# Or if you need dev dependencies for build:
+# RUN npm ci
+
+# Copy source code
+COPY . .
+
+ARG REACT_APP_BACKEND_URL
+ARG REACT_APP_API_URL
+
+ENV REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
+
+# Build the React/Vue app
+RUN npm run build
+
+# Show what was built
+RUN echo "Build output:" && ls -la /app/build
+
+FROM nginx:alpine AS production
+
+# Remove Node.js specific commands - nginx doesn't need them
+WORKDIR /usr/share/nginx/html
+
+# Remove the old files from nginx default directory
+RUN rm -rf ./*
+
+# Copy built files from builder stage
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Copy nginx configuration if you have one
+# If you don't have a custom nginx config, nginx will use its default
+# COPY --from=builder nginx/nginx.conf /etc/nginx/nginx.conf
+# Set proper permissions (nginx runs as nginx user by default)
+RUN chown -R nginx:nginx /usr/share/nginx/html && \
+    chmod -R 755 /usr/share/nginx/html
+
+# Nginx runs on port 80 by default
+EXPOSE 80
+
+# Nginx command (NOT Node.js!)
+CMD ["nginx", "-g", "daemon off;"]

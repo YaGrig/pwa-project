@@ -1,0 +1,68 @@
+import { useUnit } from "effector-react";
+import {
+  $loginForm,
+  loginFormSubmitted,
+  nameChanged,
+  $loginFormErrors,
+  emailChanged,
+  passwordChanged,
+  $isLoginFormValid,
+  logoutEvent,
+  $jwt_token,
+  appStarted,
+  $authError,
+  $isUserLoggedIn,
+  openModalEvent,
+  $modalOpen,
+} from "../../model/stores";
+
+export const useLoginForm = () => {
+  const {
+    form,
+    submitEvent,
+    nameChangeEvent,
+    openModal,
+    logout,
+    isUserLoggedIn,
+    isModalOpen,
+    authError,
+    appStartedEvent,
+    isFormValid,
+    errors,
+    token,
+    emailChangeEvent,
+    passwordChangeEvent,
+  } = useUnit({
+    form: $loginForm,
+    logout: logoutEvent,
+    token: $jwt_token,
+    appStartedEvent: appStarted,
+    submitEvent: loginFormSubmitted,
+    authError: $authError,
+    isUserLoggedIn: $isUserLoggedIn,
+    openModal: openModalEvent,
+    nameChangeEvent: nameChanged,
+    isModalOpen: $modalOpen,
+    emailChangeEvent: emailChanged,
+    isFormValid: $isLoginFormValid,
+    passwordChangeEvent: passwordChanged,
+    errors: $loginFormErrors,
+  });
+
+  return {
+    form,
+    submit: () => submitEvent(form),
+    nameChangeEvent,
+    emailChangeEvent,
+    isUserLoggedIn,
+    isModalOpen,
+    openModal,
+    logout,
+    authError,
+    appStartedEvent,
+    token,
+    isFormValid,
+    passwordChangeEvent,
+    errors,
+  };
+};
