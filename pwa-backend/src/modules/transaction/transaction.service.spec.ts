@@ -6,22 +6,22 @@ const mockDatabaseService = {
   query: jest.fn(),
 }
 
-const mockJwtService = {
-  sign: jest.fn(),
-  verify: jest.fn(),
-}
+// const mockJwtService = {
+//   sign: jest.fn(),
+//   verify: jest.fn(),
+// }
 
-const mockConfigService = {
-  get: jest.fn((key: string) => {
-    const config = {
-      JWT_SECRET: 'test-secret',
-      JWT_REFRESH_SECRET: 'test-refresh-secret',
-      JWT_EXPIRES_IN: '15m',
-      JWT_REFRESH_EXPIRES_IN: '7d',
-    }
-    return config[key]
-  }),
-}
+// const mockConfigService = {
+//   get: jest.fn((key: string) => {
+//     const config = {
+//       JWT_SECRET: 'test-secret',
+//       JWT_REFRESH_SECRET: 'test-refresh-secret',
+//       JWT_EXPIRES_IN: '15m',
+//       JWT_REFRESH_EXPIRES_IN: '7d',
+//     }
+//     return config[key]
+//   }),
+// }
 
 describe('TransactionService', () => {
   let service: TransactionService

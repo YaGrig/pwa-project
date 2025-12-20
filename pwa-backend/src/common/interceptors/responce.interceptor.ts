@@ -1,15 +1,15 @@
-import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
-import { Request, Response } from 'express';
-import { Observable, map } from 'rxjs';
+import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
+import { Request, Response } from 'express'
+import { Observable, map } from 'rxjs'
 
 interface StandardResponse {
-  success: boolean;
-  data: any;
-  timestamp: string;
-  path: string;
-  method: string;
-  statusCode: number;
-  pagination?: any;
+  success: boolean
+  data: any
+  timestamp: string
+  path: string
+  method: string
+  statusCode: number
+  pagination?: any
 }
 
 export class ValidationResponseInterceptor implements NestInterceptor {
@@ -17,14 +17,14 @@ export class ValidationResponseInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<StandardResponse> {
-    const httpContext = context.switchToHttp();
-    const request: Request = httpContext.getRequest();
-    const response: Response = httpContext.getResponse();
+    const httpContext = context.switchToHttp()
+    const request: Request = httpContext.getRequest()
+    const response: Response = httpContext.getResponse()
 
     return next.handle().pipe(
       map((data: StandardResponse) => {
         if (data == null || data?.success !== undefined) {
-          return data;
+          return data
         }
 
         const baseResponse: StandardResponse = {
@@ -34,10 +34,10 @@ export class ValidationResponseInterceptor implements NestInterceptor {
           path: request.url,
           method: request.method,
           statusCode: response.statusCode,
-        };
+        }
 
-        return baseResponse;
+        return baseResponse
       }),
-    );
+    )
   }
 }

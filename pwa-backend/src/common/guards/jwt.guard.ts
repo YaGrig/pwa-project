@@ -6,15 +6,16 @@ import {
 } from '@nestjs/common'
 import { Request } from 'express'
 import { ConfigService } from '@nestjs/config'
-import { AuthService } from 'src/modules/auth/auth.service'
+import { AuthService } from '../../modules/auth/auth.service'
+import { CustomRequest } from '../types/req.types'
 
 export class jwtAuthGuard implements CanActivate {
   constructor(
     @Inject(AuthService) private authService: AuthService,
     @Inject(ConfigService) private config: ConfigService,
   ) {}
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const req: Request = context.switchToHttp().getRequest()
+  canActivate(context: ExecutionContext): boolean {
+    const req: CustomRequest = context.switchToHttp().getRequest()
     const token = req.cookies.access_token
     const secret = this.config.get<string>('REFRESH_SECRET')
 
@@ -27,11 +28,11 @@ export class jwtAuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.authService.validateToken(token, secret)
+      const payload = this.authService.validateToken(token, secret)
 
       req.user = payload
     } catch (error) {
-      throw new UnauthorizedException('Invalid token')
+      throw new UnauthorizedException(`Invalid token: ${error}`)
     }
     return true
   }

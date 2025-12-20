@@ -70,6 +70,7 @@ export class TransactionService {
   }
 
   async findOne(id: number, userId: string) {
+    console.log(userId)
     const transactions = await this.database.query(
       'SELECT id, amount, description FROM transactions where id=$1',
       [id],
@@ -104,7 +105,7 @@ export class TransactionService {
     )
   }
 
-  async remove(id: number, userId: string) {
+  async remove(id: number) {
     await this.database.query('DELETE FROM transactions where id=$1', [id])
   }
 }

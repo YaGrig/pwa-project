@@ -1,12 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { CreateUserDto } from './dto/create-auth.dto'
 import { UpdateAuthDto } from './dto/update-auth.dto'
-import { DatabaseService } from 'src/database/database.service'
+import { DatabaseService } from '../../database/database.service'
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 import * as bcrypt from 'bcrypt'
 import { JwtPayload, User } from './user.type'
-import { NotificationGateway } from '@/websocket/websocket.service'
+// import { NotificationGateway } from '@/websocket/websocket.service'
 import { LoginAuthDto } from './dto/login-auth.dto'
 
 @Injectable()
@@ -15,7 +15,7 @@ export class AuthService {
     private database: DatabaseService,
     private jwtService: JwtService,
     private config: ConfigService,
-    private notification: NotificationGateway,
+    // private notification: NotificationGateway,
   ) {}
   async register(dto: CreateUserDto) {
     const user_in_db = (await this.findOneByEmail(dto.email)).rows[0]
@@ -81,8 +81,8 @@ export class AuthService {
     return users
   }
 
-  async findOne(id: number) {
-    const user = await this.database.query(
+  async findOne(id: string) {
+    const user = await this.database.query<User>(
       `SELECT id, username, email, user_role FROM users WHERE id=$1`,
       [id],
     )

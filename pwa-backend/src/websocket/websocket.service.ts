@@ -27,6 +27,7 @@ export class NotificationGateway
 
   @websockets.SubscribeMessage('message')
   handleMessage(client: Socket, payload: any): websockets.WsResponse<string> {
+    console.log(client, payload)
     return { event: 'response', data: 'Hello World!' }
   }
 }

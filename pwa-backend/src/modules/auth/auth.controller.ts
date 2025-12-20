@@ -2,27 +2,27 @@ import {
   Controller,
   Post,
   Body,
-  UsePipes,
+  // UsePipes,
   Res,
   Get,
-  UseGuards,
+  // UseGuards,
   Req,
 } from '@nestjs/common'
 import { AuthService } from './auth.service'
-import { CreateUserSchema, type CreateUserDto } from './dto/create-auth.dto'
-import { ZodValidationPipe } from '@/common/pipes/zod.pipe'
+import { type CreateUserDto } from './dto/create-auth.dto'
+// import { ZodValidationPipe } from '@/common/pipes/zod.pipe'
 import type { Response } from 'express'
-import { jwtAuthGuard } from 'src/common/guards/jwt.guard'
-import type { CustomRequest } from 'src/common/types/req.types'
-import { AuthGuard } from '@nestjs/passport'
-import { type LoginAuthDto, LoginAuthSchema } from './dto/login-auth.dto'
+// import { jwtAuthGuard } from '../../common/guards/jwt.guard'
+import type { CustomRequest } from '../../common/types/req.types'
+// import { AuthGuard } from '@nestjs/passport'
+import { type LoginAuthDto } from './dto/login-auth.dto'
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  @UsePipes(new ZodValidationPipe(CreateUserSchema))
+  // @UsePipes(new ZodValidationPipe(CreateUserSchema))
   async register(
     @Body() createAuthDto: CreateUserDto,
     @Res({ passthrough: true }) response: Response,
@@ -46,7 +46,7 @@ export class AuthController {
   }
 
   @Post('register')
-  @UsePipes(new ZodValidationPipe(LoginAuthSchema))
+  // @UsePipes(new ZodValidationPipe(LoginAuthSchema))
   async login(
     @Body() loginAuthDto: LoginAuthDto,
     @Res({ passthrough: true }) response: Response,
@@ -69,13 +69,13 @@ export class AuthController {
     }
   }
   @Get('me')
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   async getMe(@Req() req: CustomRequest) {
     return await this.authService.findOne(req.user)
   }
 
   @Get('refresh')
-  @UseGuards(jwtAuthGuard)
+  // @UseGuards(jwtAuthGuard)
   refresh(@Req() req: CustomRequest) {
     return this.authService.refreshTokens(req.user)
   }

@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common'
 import { CacheModule } from '@nestjs/cache-manager'
-import * as redisStore from 'cache-manager-redis-store'
+// import * as redisStore from 'cache-manager-redis-store'
 
 // const isProduction = process.env.NODE_ENV === 'production'
 

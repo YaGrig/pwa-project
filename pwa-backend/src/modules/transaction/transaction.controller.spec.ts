@@ -16,7 +16,7 @@ const createTransactionMock = {
 
 describe('TransactionController', () => {
   let controller: TransactionController
-  let service: TransactionService
+  // let service: TransactionService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,7 +30,7 @@ describe('TransactionController', () => {
     }).compile()
 
     controller = module.get<TransactionController>(TransactionController)
-    service = module.get<TransactionService>(TransactionService)
+    // service = module.get<TransactionService>(TransactionService)
   })
 
   it('should be defined', () => {

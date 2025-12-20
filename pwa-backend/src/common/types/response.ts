@@ -1,29 +1,29 @@
 // types/response.types.ts
 export interface BaseResponse<T = any> {
-  success: boolean;
-  data: T;
-  timestamp: string;
-  path: string;
-  method: string;
-  statusCode: number;
+  success: boolean
+  data: T
+  timestamp: string
+  path: string
+  method: string
+  statusCode: number
 }
 
 export interface PaginatedResponse<T = any> extends BaseResponse<T> {
   pagination: {
-    page: number;
-    limit: number;
-    total: number;
+    page: number
+    limit: number
+    total: number
     // можно добавить другие поля пагинации
-  };
+  }
 }
 
 export interface PaginatedData<T = any> {
-  items: T[];
+  items: T[]
   meta: {
-    page: number;
-    limit: number;
-    total: number;
-  };
+    page: number
+    limit: number
+    total: number
+  }
 }
 
 // Type guard для проверки пагинированных данных

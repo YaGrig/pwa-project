@@ -1,3 +1,6 @@
 export interface CustomRequest extends Request {
-  user: any;
+  user: string
+  cookies: {
+    access_token: string
+  }
 }

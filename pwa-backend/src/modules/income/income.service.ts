@@ -1,10 +1,9 @@
-import { Injectable, UnauthorizedException, UseGuards } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { CreateIncomeDto } from './dto/create-income.dto'
 import { UpdateIncomeDTO } from './dto/update-income.dto'
-import { DatabaseService } from '@/database/database.service'
-import { AuthGuard } from '@nestjs/passport'
+import { DatabaseService } from '../../database/database.service'
 
-@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt'))
 @Injectable()
 export class IncomeService {
   constructor(private database: DatabaseService) {}
