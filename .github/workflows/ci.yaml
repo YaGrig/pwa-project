@@ -79,7 +79,7 @@ jobs:
 
       - name: Install Backend Dependencies
         working-directory: ./pwa-backend
-        run: npm ci
+        run: npm i
         # if: exists('backend/package.json')
 
       - name: Run Backend Linting
@@ -99,22 +99,22 @@ jobs:
 
       # Frontend (React)
       - name: Install Frontend Dependencies
-        working-directory: ./frontend
-        run: npm ci
+        working-directory: ./pwa-frontend
+        run: npm i
         # if: exists('frontend/package.json')
 
       - name: Run Frontend Linting
-        working-directory: ./frontend
+        working-directory: ./pwa-frontend
         run: npm run lint
         # if: exists('frontend/package.json')
 
       - name: Run Frontend Tests
-        working-directory: ./frontend
+        working-directory: ./pwa-frontend
         run: npm test -- --passWithNoTests --watchAll=false
         # if: exists('frontend/package.json')
 
       - name: Build Frontend
-        working-directory: ./frontend
+        working-directory: ./pwa-frontend
         run: npm run build
         # if: exists('frontend/package.json')
 
