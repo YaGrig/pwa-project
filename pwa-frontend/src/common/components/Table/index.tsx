@@ -218,7 +218,6 @@ export default function EnhancedTable<
   const [selected, setSelected] = useState<readonly number[]>([]);
 
   const rows: Q[] = useMemo(() => {
-    console.log("???", props.rows);
     return props.rows || [];
   }, [props]);
 

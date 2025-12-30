@@ -58,7 +58,12 @@ services:
   redis:
     image: redis:7-alpine
     container_name: redis_prod
-    command: redis-server --requirepass pswd --appendonly yes
+    command: >
+      redis-server
+      --appendonly no
+      --maxmemory 100mb  # Ограничение памяти
+      --maxmemory-policy allkeys-lru  # Удалять по LRU
+      --maxmemory-samples 5  # Количество проверяемых ключей
     volumes:
       - redis_data:/data
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf

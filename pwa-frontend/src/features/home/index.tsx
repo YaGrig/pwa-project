@@ -1,4 +1,5 @@
 import EnhancedTable from "../../common/components/Table";
+import { GeneralAnalytics } from "../analytics/ui";
 import { IncomeForm } from "../income/ui";
 import { IncomeTable } from "../income/ui/table";
 import { TransactionTable } from "../transaction/ui/table";
@@ -54,6 +55,7 @@ export const Home = () => {
       <TransactionTable />
       <IncomeTable />
       <IncomeForm />
+      <GeneralAnalytics />
     </>
   );
 };

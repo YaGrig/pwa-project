@@ -19,7 +19,7 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
 
   constructor() {
     this.pool = new Pool({
-      host: 'postgres',
+      host: process.env.DB_HOST || 'localhost',
       port: 5432,
       user: 'user',
       password: 'pswd',
@@ -52,13 +52,6 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
     values?: any[],
   ): Promise<QueryResult<T>> {
     try {
-      // console.log('=== DATABASE QUERY DEBUG ===');
-      // console.log('Query string:', query);
-      // console.log('Query values:', values);
-      // console.log(
-      //   'Values types:',
-      //   values?.map((v) => typeof v),
-      // );
       const res = await this.pool.query(query, values)
       return res
     } catch (error) {

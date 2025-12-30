@@ -1,12 +1,19 @@
 import { createStore, createEvent, createEffect, sample } from "effector";
-import { LoginForm } from "../lib/types";
+import { LoginFormFields } from "../lib/types";
 
-type UserInfo = {
+interface UserInfo {
   email: string;
   name: string;
-};
+}
 
-export const loginFormSubmitted = createEvent<LoginForm>();
+export enum modeTypes {
+  login = "login",
+  registration = "registration",
+}
+
+// type modeType = "login" | "registration";
+
+export const loginFormSubmitted = createEvent<LoginFormFields>();
 export const LogoutClicked = createEvent();
 export const authFormOpened = createEvent();
 export const authFormClosed = createEvent();
@@ -17,12 +24,15 @@ export const appStarted = createEvent();
 export const logoutEvent = createEvent();
 export const redirectEvent = createEvent();
 export const openModalEvent = createEvent<boolean>();
+export const changeModeEvent = createEvent<modeTypes>();
 
 //tanStack events
 
 export const authSuccess = createEvent<{ data: UserInfo }>();
 export const authFailed = createEvent();
 export const authChecked = createEvent();
+
+export const $modeModal = createStore<modeTypes>(modeTypes.login);
 
 export const $loginForm = createStore({
   email: "",
@@ -35,9 +45,9 @@ export const $userInfo = createStore({
   name: "",
 });
 
-export const $isUserLoggedIn = $userInfo.map((user) => !!user.email);
-
 export const $jwt_token = createStore("");
+
+export const $isUserLoggedIn = $jwt_token.map((token) => !!token);
 
 // export $user = createStore({
 //   email
@@ -47,6 +57,8 @@ export const $isAuthFormOpen = createStore(false);
 export const $isLoginFormOpen = createStore(false);
 export const $authError = createStore(false);
 export const $modalOpen = createStore(false);
+
+$modeModal.on(changeModeEvent, (_, payload) => payload);
 
 $modalOpen.on(openModalEvent, (_, payload) => payload);
 
@@ -88,20 +100,19 @@ $loginForm
 export const refreshTokenFx = createEffect<void, { jwt_token: string }, Error>(
   async () => {
     try {
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/auth/refresh`,
-        {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const res = await fetch(`http://localhost:3001/auth/refresh`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (!res.ok) {
         if (res.status === 401) {
           redirectEvent();
         }
+        localStorage.removeItem("token");
+
         throw new Error(`Refresh failed with status: ${res.status}`);
       }
 
@@ -110,7 +121,7 @@ export const refreshTokenFx = createEffect<void, { jwt_token: string }, Error>(
       if (!data.data?.jwt_token) {
         throw new Error("Invalid response structure");
       }
-
+      localStorage.setItem("token", data.data.jwt_token);
       return { jwt_token: data.data.jwt_token };
     } catch (error) {
       if (error instanceof Error) {
@@ -122,7 +133,7 @@ export const refreshTokenFx = createEffect<void, { jwt_token: string }, Error>(
 );
 
 export const logoutFx = createEffect(async (token: string) => {
-  const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/logout`, {
+  const res = await fetch(`http://localhost:3001/auth/logout`, {
     credentials: "include",
   });
   if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);

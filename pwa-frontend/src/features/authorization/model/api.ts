@@ -1,9 +1,9 @@
-import { LoginForm, RegistrationForm } from "../lib/types";
+import { LoginFormFields, RegistrationFields } from "../lib/types";
 
 export const AuthApi = {
   api: process.env.REACT_APP_BACKEND_URL || "http://localhost:3001",
-  async register(data: RegistrationForm) {
-    const res = await fetch(`${this.api}/auth/register`, {
+  async register(data: RegistrationFields) {
+    const res = await fetch(`http://localhost:3001/auth/register`, {
       method: "POST",
       body: JSON.stringify(data),
       credentials: "include",
@@ -15,8 +15,8 @@ export const AuthApi = {
     return res.json();
   },
 
-  async login(data: LoginForm) {
-    const res = await fetch(`${this.api}/auth/login`, {
+  async login(data: LoginFormFields) {
+    const res = await fetch(`http://localhost:3001/auth/login`, {
       method: "POST",
       body: JSON.stringify(data),
       credentials: "include",
@@ -38,13 +38,35 @@ export const AuthApi = {
     return res.json();
   },
 
-  async refreshToken(): Promise<{ access_token: string }> {
-    const res = await fetch(`${this.api}/auth/refresh`, {
-      credentials: "include",
-    });
-    const data = await res.json();
-    // const {data} = res;
+  async refreshToken(): Promise<{ jwt_token: string }> {
+    try {
+      const res = await fetch(`http://localhost:3001/auth/refresh`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    return data.data;
+      if (!res.ok) {
+        // if (res.status === 401) {
+        //   redirectEvent();
+        // }
+        throw new Error(`Refresh failed with status: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      if (!data.data?.jwt_token) {
+        throw new Error("Invalid response structure");
+      }
+
+      return { jwt_token: data.data.jwt_token };
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Unknown error during token refresh");
+    }
   },
 };

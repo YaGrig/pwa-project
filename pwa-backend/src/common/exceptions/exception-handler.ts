@@ -33,7 +33,7 @@ export class GlobalErrorFilter implements ExceptionFilter {
     let status: number
     let message: string
     let code: string
-    let details: string
+    let details: string | undefined = undefined
 
     if (exception instanceof HttpException) {
       status = exception.getStatus()
@@ -66,7 +66,7 @@ export class GlobalErrorFilter implements ExceptionFilter {
       error: {
         code,
         message,
-        ...(details && { details }),
+        details,
       },
       timestamp: new Date().toISOString(),
       path: request.url,

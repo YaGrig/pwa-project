@@ -19,14 +19,13 @@ export const TransactionTable = () => {
   const { data } = useGetAllTransactionsQuery();
 
   useEffect(() => {
-    console.log(data, data, "??SAdasdo");
     getAllTransactions(data?.rows);
     countTransactionsChange(data?.count);
   }, [countTransactionsChange, data, getAllTransactions]);
 
-  useEffect(() => {
-    console.log(transactions, "wow");
-  }, [transactions]);
+  // useEffect(() => {
+  //   console.log(transactions, "wow");
+  // }, [transactions]);
 
   return (
     <EnhancedTable<Transaction, sortOptions>

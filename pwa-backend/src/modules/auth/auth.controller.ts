@@ -7,22 +7,24 @@ import {
   Get,
   // UseGuards,
   Req,
+  UsePipes,
+  UseGuards,
 } from '@nestjs/common'
 import { AuthService } from './auth.service'
-import { type CreateUserDto } from './dto/create-auth.dto'
-// import { ZodValidationPipe } from '@/common/pipes/zod.pipe'
+import { CreateUserSchema, type CreateUserDto } from './dto/create-auth.dto'
+import { ZodValidationPipe } from '../../common/pipes/zod.pipe'
 import type { Response } from 'express'
-// import { jwtAuthGuard } from '../../common/guards/jwt.guard'
+import { jwtAuthGuard } from '../../common/guards/jwt.guard'
 import type { CustomRequest } from '../../common/types/req.types'
-// import { AuthGuard } from '@nestjs/passport'
-import { type LoginAuthDto } from './dto/login-auth.dto'
+import { AuthGuard } from '@nestjs/passport'
+import { LoginAuthSchema, type LoginAuthDto } from './dto/login-auth.dto'
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  // @UsePipes(new ZodValidationPipe(CreateUserSchema))
+  @UsePipes(new ZodValidationPipe(CreateUserSchema))
   async register(
     @Body() createAuthDto: CreateUserDto,
     @Res({ passthrough: true }) response: Response,
@@ -45,8 +47,8 @@ export class AuthController {
     }
   }
 
-  @Post('register')
-  // @UsePipes(new ZodValidationPipe(LoginAuthSchema))
+  @Post('login')
+  @UsePipes(new ZodValidationPipe(LoginAuthSchema))
   async login(
     @Body() loginAuthDto: LoginAuthDto,
     @Res({ passthrough: true }) response: Response,
@@ -69,13 +71,13 @@ export class AuthController {
     }
   }
   @Get('me')
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   async getMe(@Req() req: CustomRequest) {
     return await this.authService.findOne(req.user)
   }
 
   @Get('refresh')
-  // @UseGuards(jwtAuthGuard)
+  @UseGuards(jwtAuthGuard)
   refresh(@Req() req: CustomRequest) {
     return this.authService.refreshTokens(req.user)
   }
@@ -91,7 +93,7 @@ export class AuthController {
   }
 
   @Get('logout')
-  // @UseGuards(jwtAuthGuard)
+  @UseGuards(jwtAuthGuard)
   async logout(
     @Req() req: CustomRequest,
     @Res({ passthrough: true }) response: Response,

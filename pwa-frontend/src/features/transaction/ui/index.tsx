@@ -5,12 +5,16 @@ import { useTransaction } from "../lib/hooks/useTransaction";
 import { useCreateTransactionMutation } from "../model/mutations";
 
 export const TransactionForm = () => {
-  const { form, AmountChange, DescriptionChange, isModalOpen } =
+  const { form, AmountChange, DescriptionChange, isModalOpen, openModal } =
     useTransaction();
 
   const { mutate: create } = useCreateTransactionMutation();
   const handleSubmit = () => {
     create(form);
+  };
+
+  const handleModalClose = () => {
+    openModal(false);
   };
 
   const handleChangeField =
@@ -23,6 +27,7 @@ export const TransactionForm = () => {
     <BaseForm
       header="New Transaction"
       open={isModalOpen}
+      close={handleModalClose}
       onSubmit={handleSubmit}
     >
       <FormField

@@ -1,15 +1,20 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { TranscationApi } from "./api";
 import { useTransaction } from "../lib/hooks/useTransaction";
+import { useGetAllTransactionsQuery } from "./queries";
+import { TransactionResponse } from "../lib/types/transaction.type";
 
 export const useCreateTransactionMutation = () => {
   const queryClient = new QueryClient();
   const { createdEventSuccess, createdEventFailure } = useTransaction();
+  // const { refetch } = useGetAllTransactionsQuery();
 
   return useMutation({
     mutationFn: TranscationApi.createTransaction,
-    onSuccess: (payload) => {
-      createdEventSuccess(payload);
+    onSuccess: (payload: TransactionResponse | undefined) => {
+      if (payload) {
+        createdEventSuccess(payload);
+      }
     },
 
     onError: (error) => {

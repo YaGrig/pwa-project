@@ -66,6 +66,8 @@ export class AuthService {
     const jwt_token = this.generateJwtToken(user_in_db.id)
     const refresh_token = this.generateRefreshToken(user_in_db.id)
 
+    console.log(user_in_db, 'idnd')
+
     await this.update(+user_in_db.id, { refresh_token })
 
     return {

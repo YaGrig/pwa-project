@@ -20,7 +20,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     private authService: AuthService,
   ) {
     const secret = configService.get<string>('JWT_ACCESS_SECRET')
-    console.log(secret, process.env.JWT_ACCESS_SECRET, 'saeraweojraweporj')
     if (!secret) {
       throw new Error('JWT_TOKEN is not defined in environment variables')
     }
@@ -34,6 +33,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(req: Request, payload: JwtPayload) {
+    console.log('????', payload)
     const user = await this.authService.findOne(payload.sub)
 
     if (!user) {

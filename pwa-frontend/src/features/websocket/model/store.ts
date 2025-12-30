@@ -6,7 +6,7 @@ import {
   scopeBind,
 } from "effector";
 import { Socket } from "socket.io-client";
-import { socket } from "./socket";
+import socket from "./socket";
 
 export const socketConnectedEvent = createEvent<Socket>();
 export const socketDisconnectedEvent = createEvent();
@@ -61,21 +61,22 @@ export const $socket = createStore<Socket | {}>({})
 sample({
   clock: socketInitEvent,
   fn: () => {
-    const socketInstance = socket;
+    if (!socket) {
+      return;
+    }
 
-    socketInstance.on("connect", () => {
-      console.log(socketInstance, "what");
-      socketConnectedEvent(socketInstance);
+    socket.on("connect", () => {
+      // socketConnectedEvent(socket);
     });
 
-    socketInstance.on("registered", (error: Error) => {
+    socket.on("registered", (error: Error) => {
       console.log("hehehe");
     });
 
-    socketInstance.on("error", (error: Error) => {
+    socket.on("error", (error: Error) => {
       console.log(error, "hehehe");
     });
 
-    return socketInstance;
+    return socket;
   },
 });

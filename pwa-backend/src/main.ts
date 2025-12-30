@@ -15,7 +15,7 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalErrorFilter())
 
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000', 'http://frontend:3001'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: [
       'Content-Type',

@@ -1,5 +1,0 @@
-id,username,email,hashed_password,refresh_token,user_role
-1,alice,alice@example.com,$2b$10$N9qo8uLOickgx2ZMRZoMy.Mr.7.6uZ3Xp6WXWq5Lq5J5YV,,User
-2,bob,bob@example.com,$2b$10$N9qo8uLOickgx2ZMRZoMy.Mr.7.6uZ3Xp6WXWq5Lq5J5YV,,User
-3,charlie,charlie@example.com,$2b$10$N9qo8uLOickgx2ZMRZoMy.Mr.7.6uZ3Xp6WXWq5Lq5J5YV,,Admin
-4,diana,diana@example.com,$2b$10$N9qo8uLOickgx2ZMRZoMy.Mr.7.6uZ3Xp6WXWq5Lq5J5YV,,User

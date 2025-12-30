@@ -1,9 +1,9 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Link from "@mui/material/Link";
 import { useLoginForm } from "../../../features/authorization/lib/hooks/useLoginForm";
 
 export const Header = () => {
-  const { openModal } = useLoginForm();
+  const { openModal, isUserLoggedIn, form } = useLoginForm();
   const handleClick = () => {
     openModal(true);
   };
@@ -11,14 +11,18 @@ export const Header = () => {
   return (
     <header>
       <Box>
-        <Link
-          color="primary"
-          underline="hover"
-          variant="button"
-          sx={{ backgroundColor: "primary" }}
-        >
-          <span onClick={handleClick}>Login</span>
-        </Link>
+        {isUserLoggedIn ? (
+          <Typography>{form.name}</Typography>
+        ) : (
+          <Link
+            color="primary"
+            underline="hover"
+            variant="button"
+            sx={{ backgroundColor: "primary" }}
+          >
+            <span onClick={handleClick}>Login</span>
+          </Link>
+        )}
       </Box>
     </header>
   );

@@ -1,20 +1,16 @@
 import * as React from "react";
-import {
-  Modal,
-  Typography,
-  TextField,
-  Button,
-  FormControl,
-  List,
-  ListItemText,
-} from "@mui/material";
+import { Typography } from "@mui/material";
 import { useLoginForm } from "../lib/hooks/useLoginForm";
-import { useMeQuery } from "../model/queries";
 import { BaseForm } from "../../../common/components/Form/index";
-import { useRegistrationMutation } from "../model/mutations";
+import { useLoginMutation, useRegistrationMutation } from "../model/mutations";
 import { FormField } from "../../../common/components/Form/FormField";
-import { Layout } from "../../../common/components/Layout";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo } from "react";
+import { modeTypes } from "../model/stores";
+import {
+  FieldHandler,
+  LoginFormFields,
+  RegistrationFields,
+} from "../lib/types";
 
 const LoginForm = () => {
   const {
@@ -23,19 +19,41 @@ const LoginForm = () => {
     nameChangeEvent,
     emailChangeEvent,
     isModalOpen,
+    changeMode,
+    userInfo,
+    modeModal,
     logout,
+    isUserLoggedIn,
     openModal,
     passwordChangeEvent,
     errors,
   } = useLoginForm();
 
   const { mutate: register } = useRegistrationMutation();
-  const [login, setLogin] = useState();
+  const { mutate: login } = useLoginMutation();
+
+  const loginFields = useMemo<FieldHandler<LoginFormFields>>(
+    () => [
+      { field: "email", handler: emailChangeEvent },
+      { field: "password", handler: passwordChangeEvent },
+    ],
+    [emailChangeEvent, passwordChangeEvent]
+  );
+
+  const regFields = useMemo<FieldHandler<RegistrationFields>>(
+    () => [...loginFields, { field: "name", handler: nameChangeEvent }],
+    [loginFields, nameChangeEvent]
+  );
+
+  const fields = useMemo(
+    () => (modeModal === modeTypes.login ? loginFields : regFields),
+    [loginFields, modeModal, regFields]
+  );
 
   const hanldeSubmit = useCallback(() => {
-    // e.preventDefault();
-    isFormValid && register(form);
-  }, [login]);
+    isFormValid &&
+      (modeModal === modeTypes.login ? login(form) : register(form));
+  }, [form, isFormValid, register]);
 
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -46,6 +64,18 @@ const LoginForm = () => {
     openModal(false);
   };
 
+  const handleChangeMode = () => {
+    return modeModal === modeTypes.login
+      ? changeMode(modeTypes.registration)
+      : changeMode(modeTypes.login);
+  };
+
+  const extraInfo = (
+    <Typography>
+      For {modeModal} click <span onClick={handleChangeMode}>here</span>
+    </Typography>
+  );
+
   const handleChangeField =
     (event: (payload: string) => string) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,23 +84,23 @@ const LoginForm = () => {
 
   return (
     <BaseForm
-      header={login ? "Login" : "Registration"}
+      header={modeModal}
       open={isModalOpen}
+      extraInfo={extraInfo}
       close={handleModalClose}
       onSubmit={hanldeSubmit}
     >
-      <FormField
-        value={form.email}
-        onChange={handleChangeField(emailChangeEvent)}
-      />
-      <FormField
-        value={form.name}
-        onChange={handleChangeField(nameChangeEvent)}
-      />
-      <FormField
-        value={form.password}
-        onChange={handleChangeField(passwordChangeEvent)}
-      />
+      {fields.map((item) => {
+        return (
+          <FormField
+            key={item.field}
+            value={form[`${item.field}`]}
+            label={item.field}
+            type={(item.field === "password" && "password") || ""}
+            onChange={handleChangeField(item.handler)}
+          />
+        );
+      })}
     </BaseForm>
   );
 };

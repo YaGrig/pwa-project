@@ -2,11 +2,12 @@ import { createEvent, createStore } from "effector";
 import {
   sortOptions,
   Transaction,
+  TransactionResponse,
   TransactionSortOptions,
 } from "../lib/types/transaction.type";
 
 // tanstack events
-export const transactionCreatedSuccess = createEvent<Transaction>();
+export const transactionCreatedSuccess = createEvent<TransactionResponse>();
 export const transactionCreatedFailure = createEvent<Error>();
 export const allTransactionReq = createEvent<Transaction[]>();
 export const formAmountChange = createEvent<string>();
@@ -32,7 +33,7 @@ export const $sort = createStore<TransactionSortOptions>({
 export const $transactions = createStore<Transaction[]>([]);
 
 export const $transactionForm = createStore<Transaction>({
-  amount: "",
+  amount: 0,
   description: "",
   photo_url: "",
 });
@@ -44,7 +45,7 @@ $transactionForm
   .on(formAmountChange, (state, amount) => {
     return {
       ...state,
-      amount,
+      amount: parseInt(amount),
     };
   })
   .on(formDescriptionChange, (state, description) => ({
@@ -61,7 +62,6 @@ $transactions
     return [...state, payload];
   })
   .on(allTransactionReq, (_, payload) => {
-    console.log(payload, "play");
     return payload;
   });
 

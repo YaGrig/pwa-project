@@ -10,6 +10,7 @@ interface FormProps {
   submitButtonText?: string;
   open?: boolean;
   close?: (value: Event) => void;
+  extraInfo?: ReactElement;
 }
 
 export const BaseForm: FC<FormProps> = ({ children, ...props }) => {
@@ -17,6 +18,7 @@ export const BaseForm: FC<FormProps> = ({ children, ...props }) => {
     onSubmit,
     submitButtonText = "SUBMIT",
     open = false,
+    extraInfo,
     header,
     close,
   } = props;
@@ -40,6 +42,7 @@ export const BaseForm: FC<FormProps> = ({ children, ...props }) => {
         </Typography>
         {validatedChildren}
         <Button onClick={onSubmit}>{submitButtonText}</Button>
+        {extraInfo}
       </FormControl>
     </Modal>
   );

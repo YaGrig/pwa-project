@@ -11,48 +11,82 @@ services:
       -c max_connections=50
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
+      - ./SQL:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    networks:
+      - app_network
 
   backend:
     build:
       context: ./pwa-backend
       dockerfile: Dockerfile.dev
     ports:
-      - "3000:3000"
+      - "3001:3001"
     env_file: ./pwa-backend/.env
     environment:
       NODE_ENV: development
       DEBUG: "app:*"
+      DB_HOST: postgres
+      REDIS_HOST: redis
     volumes:
       - ./pwa-backend:/app
       - /app/node_modules
     depends_on:
       redis:
-        condition: service_started
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - app_network
 
   frontend:
     build:
       context: ./pwa-frontend
       dockerfile: Dockerfile.dev
     ports:
-      - "3001:3000"
+      - "3000:3000"
     environment:
-      REACT_APP_API_URL: "http://backend:3000"
+      REACT_APP_BACKEND_URL: "http://backend:3001"
     volumes:
       - ./pwa-frontend:/app_front
       - /app_front/node_modules
     stdin_open: true
     tty: true
+    networks:
+      - app_network
 
   redis:
     image: redis:7-alpine
-    command: redis-server --appendonly no
+    command: >
+      redis-server
+      --appendonly no
+      --maxmemory 100mb  
+      --maxmemory-policy allkeys-lru 
+      --maxmemory-samples 5
     ports:
       - "6379:6379"
     volumes:
       - redis_dev_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    networks:
+      - app_network
 
 volumes:
   postgres_dev_data:
   redis_dev_data:
+
+networks:
+  app_network:
+    driver: bridge

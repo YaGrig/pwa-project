@@ -9,6 +9,7 @@ import {
   UsePipes,
   Req,
   Query,
+  UseGuards,
 } from '@nestjs/common'
 import { TransactionService } from './transaction.service'
 import {
@@ -21,10 +22,13 @@ import {
 } from './dto/update-transaction.dto'
 import { ZodValidationPipe } from '../../common/pipes/zod.pipe'
 import type { CustomRequest } from '../../common/types/req.types'
-import * as getAllQueryDto from './dto/get-all-query.dto'
-import { FindTransactionsQuerySchema } from './dto/get-all-query.dto'
+import {
+  type FindTransactionsQueryDTO,
+  FindTransactionsQuerySchema,
+} from './dto/get-all-query.dto'
+import { AuthGuard } from '@nestjs/passport'
 
-// @UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'))
 @Controller('transaction')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
@@ -41,10 +45,10 @@ export class TransactionController {
   @Get('all')
   findAll(
     @Req() req: CustomRequest,
-    // @Query('page') page: number,
     @Query(new ZodValidationPipe(FindTransactionsQuerySchema))
-    query: getAllQueryDto.FindTransactionsQueryDTO,
+    query: FindTransactionsQueryDTO,
   ) {
+    console.log('???')
     return this.transactionService.findAll(
       req.user,
       query.offset,
@@ -69,7 +73,7 @@ export class TransactionController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string, @Req() req: CustomRequest) {
+  remove(@Param('id') id: string, req: CustomRequest) {
     return this.transactionService.remove(+id, req.user)
   }
 }
