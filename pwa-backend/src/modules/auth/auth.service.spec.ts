@@ -6,7 +6,6 @@ import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 import { HttpException, HttpStatus } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
-import { email } from 'zod'
 
 // Мок для bcrypt
 jest.mock('bcrypt', () => ({
